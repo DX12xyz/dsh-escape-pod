@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Escape Pod",
+    "description": "Runs commands in a container detached from DSH: they keep running across a DSH crash or restart and their output goes to a durable ledger. A foreground call gets its real result backfilled on the next boot; background jobs stay readable. Tools: pod_run / pod_exec / pod_output / pod_kill / pod_freeze / pod_status. This component also owns the settings page: freeze mode (freeze 10s after DSH disappears, thaw on reconnect, self-destruct once the regenerations are exhausted) and a 5-second hold to shut the pod down."
+  }
+}

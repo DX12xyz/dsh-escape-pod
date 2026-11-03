@@ -1,0 +1,43 @@
+{
+  "name": "@local/dsh-escape-pod",
+  "version": "1.1.1",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "The escape pod (逃生舱) as a standalone component: commands are owned by a detached pod process that survives DSH restarts, exposed as the pod_run / pod_exec / pod_output / pod_kill / pod_freeze / pod_status / pod_shell tools. Commands follow the calling session's DSH file policy (read-only / workspace-write / danger-full-access), and a narrower session can ask for a wider mode through the real DSH approval dialog for that one call. pod_shell detects the machine's PowerShell / bash / cmd paths and versions, lets the AI pick one per session (automatic fallback to the settings default, then to auto-detection), and the settings page stores defaults plus freeze mode (freeze running commands 10s after DSH disappears, thaw on reconnect, regeneration episodes, self-destruct) and a hold-to-confirm button that kills the pod's jobs and shuts the pod down.",
+  "scripts": {
+    "test": "node test/escape-pod-shell.test.mjs && node test/pod-settings.test.mjs && node test/shells.test.mjs && node test/pod-shell-tool.test.mjs && node test/pod-policy.test.mjs && node test/pod-freeze-policy.test.mjs"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "pod.mjs",
+    "*.mjs",
+    "scripts/*.mjs",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "TECHDOC.md",
+    "HISTVER.md",
+    "HISTVER_legacy.md",
+    "THIRD_PARTY_NOTICES.md",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}

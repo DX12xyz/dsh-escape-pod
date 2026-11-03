@@ -1,0 +1,7 @@
+# Host half of the escape pod plugin (@local/dsh-escape-pod, v1.1.1):
+# one package, one component. The Loader patch must use the `- insert:` op shape
+# (a bare entry list is not a patch), otherwise the row never mounts and the
+# plugin page reports "这个插件包不包含任何组件" — no pod_* tools, no settings.
+- insert:
+    - id: dsh-escape-pod
+      name: '@local/dsh-escape-pod'

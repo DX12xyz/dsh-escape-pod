@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "逃生舱",
+    "description": "把命令交给脱离 DSH 的常驻容器：DSH 崩溃或重启时命令继续运行，输出写入账本；前台调用在新 Host 启动后回填真实结果，后台任务可按需续读。提供 pod_run / pod_exec / pod_output / pod_kill / pod_freeze / pod_status，以及本组件的设置页：冻结模式（DSH 消失 10 秒后冻结、回来解冻、再生机会耗尽后自毁并终止任务）和长按 5 秒关闭逃生舱。"
+  }
+}

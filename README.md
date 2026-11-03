@@ -53,31 +53,46 @@ DSH 原生的 `pwsh` 工具把命令跑在 Host 的进程树里。Host 一退出
 
 ## 安装
 
-要求：Windows、DSH Web profile、可用的 `dsh` 命令。
+要求：Windows、可用的 `dsh` 命令。
 
-### 从仓库下载部署
+仓库根目录就是插件包本身（`package.json`、`cordis.patch.yml`、Host/Client 入口、`locale/`、`icon.svg` 都在根目录），仓库不随附预打包的 `.tgz`。任选一种方式安装，下文命令以 Web profile（`web`）为例；桌面版把 `web` 换成 `desktop`。
 
-本仓库的 `releases/` 目录（GitHub 上对应 Releases 页面）直接提供该版本的 `.tgz`，无需本地构建：
+### 方式一：插件页安装（推荐，人类入口）
 
-1. 下载 `local-dsh-escape-pod-1.1.1.tgz`；
-2. 安装：
+1. 打开 DSH 插件页 →「安装插件」；
+2. 安装源填仓库地址 `https://github.com/DX12xyz/dsh-escape-pod`，或 git 简写 `github:DX12xyz/dsh-escape-pod`；
+3. 等待安装完成，按提示**重启 DSH**（Host 半身生效；Client 半身刷新页面即可）。
 
-   ```powershell
-   dsh plugin --profile web add "file:<下载目录>\local-dsh-escape-pod-1.1.1.tgz"
-   ```
-
-3. 重启 DSH（Host 半身生效；Client 半身刷新页面即可）。
-
-### 从源码构建
+### 方式二：命令行从 git 源安装
 
 ```powershell
-cd <本包源码目录>
-npm pack
-# 产出 local-dsh-escape-pod-1.1.1.tgz
-dsh plugin --profile web add "file:<本包源码目录>/local-dsh-escape-pod-1.1.1.tgz"
+dsh plugin --profile web add github:DX12xyz/dsh-escape-pod
 ```
 
-然后**重启 DSH**，调用一次 `pod_status` 验证四项：
+### 方式三：本地目录安装（改代码 / 离线可用）
+
+把仓库的 zip/tar 解压到本机，再把解压出来的仓库根目录装进 profile：
+
+```powershell
+dsh plugin --profile web add "link:<仓库根目录绝对路径>"
+```
+
+`link:` 装的是活目录：改完代码重启 DSH（Host 半身）或刷新页面（Client 半身）即可生效。
+
+### 方式四：离线打包 tgz
+
+在仓库根目录打包，再安装产出的 tgz：
+
+```powershell
+cd <仓库根目录>
+npm pack
+# 产出 local-dsh-escape-pod-1.1.1.tgz
+dsh plugin --profile web add "file:<仓库根目录>/local-dsh-escape-pod-1.1.1.tgz"
+```
+
+### 装好判据
+
+装好后**重启 DSH**，调用一次 `pod_status` 验证四项：
 
 - `podPid` / `podStartedAt` 有值，`podVersion=1.1.1`、`protocol=3`；
 - `pipe=\\.\pipe\dsh-escape-pod-core-<seedHash>`、`auth=...`、`identity=...`；
@@ -90,6 +105,12 @@ dsh plugin --profile web add "file:<本包源码目录>/local-dsh-escape-pod-1.1
 - 设置页保存只改 `<stateDir>/settings.json`，**不改 profile patch、不触发热重载**。
 
 ### 卸载与残留清理
+
+卸载：
+
+```powershell
+dsh plugin --profile web remove @local/dsh-escape-pod
+```
 
 - 卸载前先停 pod：插件页「逃生舱」卡片 → 红色长按 5 秒的关闭按钮；detached 的 pod 不随插件卸载自动退出。
 - 卸载后 `%LOCALAPPDATA%\dsh-escape-pod-core\` 仍保留 `settings.json` 与各 job 账本；确认不再需要时手动删除。
